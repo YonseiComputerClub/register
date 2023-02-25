@@ -143,7 +143,10 @@ export default function MainPage() {
             </Link>
           </ListItem>
         </UnorderedList>
-        <Box w="full" display={status !== "authenticated" ? "flex" : "none"}>
+        <Box
+          w="full"
+          display={status !== "authenticated" && !finished ? "flex" : "none"}
+        >
           <Button
             w="full"
             onClick={async () => await signIn("google")}
@@ -239,7 +242,7 @@ export default function MainPage() {
             계정 등록이 완료되었습니다.
           </Text>
           <Text textAlign="center">
-            계정 활성화를 위해 YCC 관리자에게 문의해주세요.
+            계정 활성화를 위해 YCC 임원진에게 문의해주세요.
           </Text>
         </Box>
       </Center>

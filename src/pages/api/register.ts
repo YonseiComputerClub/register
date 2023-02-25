@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { IPAUserFindResponse, IPAUserStageAddResponse } from "types/Response";
 import { authOptions } from "./auth/[...nextauth]";
 
+import Members from "~/../members.json";
+
 function encodeCookies(cookies: Record<string, string>) {
   return Object.keys(cookies)
     .map((key) => `${key}=${cookies[key]}`)
@@ -41,10 +43,16 @@ export default async function Register(
       return;
     }
 
-    // TODO: Check if the user is a member of the club
-    // if (isYCCMember()) {
-    //
-    // }
+    if (
+      !Members.find(
+        (member) => member.name === name && member.studentId === studentId
+      )
+    ) {
+      res.status(403).json({
+        message: "YCC 부원으로 확인되지 않은 사용자입니다.",
+      });
+      return;
+    }
 
     const { data: ipaUser } = await axios.post<IPAUserFindResponse>(
       `${process.env.IPA_SERVER_URL}/ipa/session/json`,
@@ -102,7 +110,7 @@ export default async function Register(
 
     if (ipaUser.result.result.length !== 0) {
       res.status(409).json({
-        message: "이미 등록된 사용자입니다",
+        message: "이미 등록된 사용자이거나 등록 확인중인 사용자입니다.",
       });
       return;
     }

@@ -81,8 +81,6 @@ export const authOptions = {
         ...ipaStagedUser.result.result,
       ];
 
-      console.log(userResult);
-
       if (
         !(
           googleProfile.email_verified &&
@@ -110,8 +108,6 @@ export const authOptions = {
       return session;
     },
   },
-
-  debug: true,
 } as NextAuthOptions;
 
 export default NextAuth(authOptions);

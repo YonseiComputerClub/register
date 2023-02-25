@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN corepack enable
 
-COPY package.json yarn.lock .yarn /app/
+COPY package.json yarn.lock .yarn/ /app/
 
 RUN yarn install
 

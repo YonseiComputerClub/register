@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Divider,
   FormControl,
   FormLabel,
   Heading,
@@ -20,7 +21,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import logo from "~/logo.png";
+import GitHub from "assets/github.png";
 
 type FormValues = {
   name: string;
@@ -115,7 +116,7 @@ export default function MainPage() {
         shadow="xl"
         rounded="xl"
       >
-        <Image src={logo} alt="YCC Logo" w="full" h="auto" />
+        <Image src="/logo.png" alt="YCC Logo" width="400" height="200" />
         <Heading as="h1" textAlign="center">
           YCC 계정 등록
         </Heading>
@@ -245,6 +246,26 @@ export default function MainPage() {
             계정 활성화를 위해 YCC 임원진에게 문의해주세요.
           </Text>
         </Box>
+        <Divider w="full" />
+        <Link
+          display="flex"
+          href={`https://github.com/${
+            process.env.GITHUB_REPO || "maxswjeon/ycc-register"
+          }`}
+          isExternal
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Image
+            src={GitHub}
+            width="16px"
+            height="16px"
+            alt="GitHub Logo"
+            display="inline"
+            mr="1"
+          />
+          {process.env.GITHUB_REPO || "maxswjeon/ycc-register"}
+        </Link>
       </Center>
     </Center>
   );

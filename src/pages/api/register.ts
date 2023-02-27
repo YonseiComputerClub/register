@@ -6,12 +6,6 @@ import { authOptions } from "./auth/[...nextauth]";
 
 import Members from "~/../members.json";
 
-function encodeCookies(cookies: Record<string, string>) {
-  return Object.keys(cookies)
-    .map((key) => `${key}=${cookies[key]}`)
-    .join("; ");
-}
-
 export default async function Register(
   req: NextApiRequest,
   res: NextApiResponse
@@ -54,6 +48,28 @@ export default async function Register(
       return;
     }
 
+    const params = new URLSearchParams();
+    params.append("user", process.env.IPA_SERVER_USERNAME);
+    params.append("password", process.env.IPA_SERVER_PASSWORD);
+
+    const loginResult = await axios.post(
+      `${process.env.IPA_SERVER_URL}/ipa/session/login_password`,
+      params.toString(),
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
+          Referer: `${process.env.IPA_SERVER_URL}/ipa/session/login_password`,
+        },
+      }
+    );
+
+    if (!loginResult.headers["set-cookie"]) {
+      return "/?error=ipaLoginFailed";
+    }
+
+    const ipaCookie = loginResult.headers["set-cookie"][0].split(";")[0];
+
     const { data: ipaUser } = await axios.post<IPAUserFindResponse>(
       `${process.env.IPA_SERVER_URL}/ipa/session/json`,
       {
@@ -73,9 +89,7 @@ export default async function Register(
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Cookie: encodeCookies({
-            ipa_session: process.env.IPA_SERVER_COOKIE,
-          }),
+          Cookie: ipaCookie,
           Referer: `${process.env.IPA_SERVER_URL}/ipa`,
         },
       }
@@ -100,9 +114,7 @@ export default async function Register(
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Cookie: encodeCookies({
-            ipa_session: process.env.IPA_SERVER_COOKIE,
-          }),
+          Cookie: ipaCookie,
           Referer: `${process.env.IPA_SERVER_URL}/ipa`,
         },
       }
@@ -152,9 +164,7 @@ export default async function Register(
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          Cookie: encodeCookies({
-            ipa_session: process.env.IPA_SERVER_COOKIE,
-          }),
+          Cookie: ipaCookie,
           Referer: `${process.env.IPA_SERVER_URL}/ipa`,
         },
       }

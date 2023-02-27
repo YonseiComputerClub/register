@@ -5,12 +5,6 @@ import { IPAUserFindResponse } from "types/Response";
 
 import CREDENTIALS from "~/../credentials.json";
 
-function encodeCookies(cookies: Record<string, string>) {
-  return Object.keys(cookies)
-    .map((key) => `${key}=${cookies[key]}`)
-    .join("; ");
-}
-
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -88,9 +82,7 @@ export const authOptions = {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Cookie: encodeCookies({
-              ipa_session: process.env.IPA_SERVER_COOKIE,
-            }),
+            Cookie: ipaCookie,
             Referer: `${process.env.IPA_SERVER_URL}/ipa`,
           },
         }

@@ -38,6 +38,10 @@ export const authOptions = {
         }
       );
 
+      if (!loginResult.headers["set-cookie"]) {
+        return "/?error=ipaLoginFailed";
+      }
+
       const ipaCookie = loginResult.headers["set-cookie"][0].split(";")[0];
 
       const { data: ipaUser } = await axios.post<IPAUserFindResponse>(

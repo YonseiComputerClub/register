@@ -34,6 +34,7 @@ const ErrorMessages = {
   notYonsei: "연세대학교 구글 계정이 아닙니다.",
   alreadyRegistered:
     "이미 등록된 계정입니다. 장시간 기다렸는데도 이 화면이 나온다면 임원진에게 문의해주세요.",
+  ipaLoginFailed: "서버 문제가 발생했습니다. 임원진에게 문의해주세요.",
 };
 
 export default function MainPage() {

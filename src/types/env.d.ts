@@ -4,6 +4,7 @@ declare module NodeJS {
     NEXTAUTH_SECRET: string;
 
     IPA_SERVER_URL: string;
-    IPA_SERVER_COOKIE: string;
+    IPA_SERVER_USERNAME: string;
+    IPA_SERVER_PASSWORD: string;
   }
 }

@@ -138,13 +138,17 @@ export default async function Register(
     const firstName = name.slice(1);
     const lastName = name[0];
 
+    const username =
+      (/^\d+$/.test(userMail.split("@")[0]) ? "y" : "") +
+      userMail.split("@")[0];
+
     await axios.post<IPAUserStageAddResponse>(
       `${process.env.IPA_SERVER_URL}/ipa/session/json`,
       {
         id: 0,
         method: "stageuser_add",
         params: [
-          [userMail.split("@")[0]],
+          [username],
           {
             all: true,
             raw: false,

@@ -199,7 +199,11 @@ export default function MainPage() {
             <Input
               autoComplete="username"
               isDisabled
-              defaultValue={data?.user.email?.split("@")[0] || ""}
+              defaultValue={
+                (/^\d+$/.test(data?.user.email?.split("@")[0] || "")
+                  ? "y"
+                  : "") + data?.user.email?.split("@")[0] || ""
+              }
             />
           </FormControl>
           <FormControl isRequired>
